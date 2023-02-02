@@ -24,7 +24,9 @@ namespace bytebank_API.Controllers
             {
                 return NotFound();
             }
-            return await _context.Agencias.ToListAsync();
+            return await _context.Agencias
+                .Include(a => a.Endereco)
+                .ToListAsync();
         }
 
         // GET: api/Agencias/5
@@ -35,7 +37,7 @@ namespace bytebank_API.Controllers
             {
                 return NotFound();
             }
-            var agencia = await _context.Agencias.FindAsync(id);
+            var agencia = await _context.AgenciasInclude(a => a.Endereco).FirstAsync(a => a.Id == id);
 
             if (agencia == null)
             {
